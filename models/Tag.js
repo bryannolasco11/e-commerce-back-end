@@ -2,7 +2,7 @@ const { Model, DataTypes } = require('sequelize');
 
 const sequelize = require('../config/connection.js');
 
-class Tag extends Model {}
+class Tag extends Model { }
 
 Tag.init(
   {
@@ -13,9 +13,14 @@ Tag.init(
       allowNull: false,
       primaryKey: true,
       autoIncrement: true
+    },
+  
+  // tag_name column
+  
+    tag_name: {
+      type: DataTypes.STRING
     }
   },
-  // tag_name column
   {
     sequelize,
     timestamps: false,
