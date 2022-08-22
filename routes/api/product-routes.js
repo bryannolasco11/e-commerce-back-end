@@ -35,14 +35,21 @@ router.get('/:id', (req, res) => {
   // find a single product by its `id`
   // be sure to include its associated Category and Tag data
   Product.findOne({
+
     // this is like SELECT * FROM users WHERE id = 1
     where: {
       id: req.params.id
     },
     // include https://gist.github.com/zcaceres/83b554ee08726a734088d90d455bc566
-    include: [{
-      model: Category
-    }]
+    include: [
+      {
+        model: Category
+      },
+      {
+        model: Tag,
+        attributes: ['id', 'tag_name']
+      }
+    ]
   })
     .then(dbProductData => {
       if (!dbProductData) {
@@ -139,16 +146,16 @@ router.delete('/:id', (req, res) => {
       id: req.params.id
     }
   })
-  .then(dbProductData => {
-    if (!dbUserData) {
-      res.status(404).json({ message: 'No user found with this id' });
-      return;
-    }
-    res.json(dbProductData);
-  })
-  .catch(err => {
-    console.log(err);
-    res.status(500).json(err);
-  });
+    .then(dbProductData => {
+      if (!dbUserData) {
+        res.status(404).json({ message: 'No user found with this id' });
+        return;
+      }
+      res.json(dbProductData);
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(500).json(err);
+    });
 });
 module.exports = router;
