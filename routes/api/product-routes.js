@@ -8,7 +8,16 @@ const { Product, Category, Tag, ProductTag } = require('../../models');
 router.get('/', (req, res) => {
   // find all products
   // be sure to include its associated Category and Tag data
-  Product.findAll()
+  Product.findAll({
+    // don't have to list attributes because getting all of them
+    // have to include categories from the other tables
+    include: [
+      {
+        model: Category,
+        attributes: ['id', 'category_name']
+      }
+    ]
+  })
     // findAll() is like SELECT * FROM users;
     .then(dbProductData => res.json(dbProductData))
     .catch(err => {
